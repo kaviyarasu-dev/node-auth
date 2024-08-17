@@ -1,2 +1,4 @@
-./node_modules
-./storage/uploads
+/.env
+/node_modules
+/package-lock.json
+/uploads

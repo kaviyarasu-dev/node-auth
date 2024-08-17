@@ -29,7 +29,7 @@ class JsonResponse {
      * @return {object} A JSON response object with the specified data, message, and status code.
      */
     error(data = null, message = '', code = 500) {
-        return response.status(code).json({
+        return this.response.status(code).json({
             status: false,
             message: message,
             data: data

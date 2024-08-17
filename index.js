@@ -1,5 +1,4 @@
 import express from "express";
-import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import mongoose from "mongoose";
 import auth from './routes/auth.js';
@@ -10,7 +9,7 @@ mongoose.connect(process.env.DB);
 const app = express();
 
 app.use('/storage', express.static('storage'));
-app.use(bodyParser.json());
+app.use(express.json());
 
 // Routes
 app.use('/auth', auth);
