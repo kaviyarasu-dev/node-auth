@@ -1,19 +1,16 @@
-import Request from "../../Validations/Request.js";
+import Request from "../../../../vendors/Request/Request.js";
 import Joi from "joi";
 
-class RegisterRequest extends Request {
+class LoginRequest extends Request {
     /**
-     * Returns the validation rules for the RegisterRequest.
+     * Returns the validation rules for the LoginRequest.
      *
      * @return {Object} An object containing the validation rules for email and password.
      */
     static rules() {
         return {
-            name: Joi.string().required(),
             email: Joi.string().email().required(),
-            phone: Joi.string().required(),
             password: Joi.string().min(6).required(),
-            profile: Joi.string().uri().optional(),
         }
     }
 
@@ -22,4 +19,4 @@ class RegisterRequest extends Request {
     }
 }
 
-export default RegisterRequest;
+export default LoginRequest;

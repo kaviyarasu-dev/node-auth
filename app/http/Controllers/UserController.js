@@ -1,5 +1,5 @@
-import User from '../Models/User.js'
-import JsonResponse from '../base/response.js'
+import User from '../../Models/User.js';
+import JsonResponse from '../../base/response.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import LoginRequest from '../Requests/Auth/LoginRequest.js';
@@ -63,6 +63,30 @@ class UserController {
 
         return new JsonResponse(res).success({ token, user: userWithoutPassword }, 'User logged in successfully', 200);
     }
+
+    async profile(req, res) {
+        const userData = await auth(req);
+        console.log(userData);
+
+        return new JsonResponse(res).success(userData, 'User profile loaded', 200);
+    }
+}
+
+/**
+ * Authenticates a user by verifying the provided JWT token and returns the corresponding user data.
+ *
+ * @param {Object} req - The HTTP request object containing the authorization header with the JWT token.
+ *
+ * @return {Object} The authenticated user data, excluding the password.
+ */
+async function auth(req) {
+    const authHeader = req.headers.authorization;
+    console.log(authHeader);
+    const token = authHeader?.split(' ')[1] || null;
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    return await User.findById(decoded.id).select('-password');
 }
 
 export default new UserController();

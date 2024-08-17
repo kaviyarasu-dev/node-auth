@@ -8,7 +8,7 @@ mongoose.connect(process.env.DB);
 
 const app = express();
 
-app.use('/storage', express.static('storage'));
+app.use('/public', express.static('public'));
 app.use(express.json());
 
 // Routes
