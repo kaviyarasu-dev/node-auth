@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import LoginRequest from '../Requests/Auth/LoginRequest.js';
 import RegisterRequest from '../Requests/Auth/RegisterRequest.js';
-
+import { auth } from '../../Helpers/auth.js';
 
 class UserController {
     /**
@@ -64,29 +64,19 @@ class UserController {
         return new JsonResponse(res).success({ token, user: userWithoutPassword }, 'User logged in successfully', 200);
     }
 
+    /**
+     * Retrieves the user profile data from the authentication middleware and sends a success response.
+     *
+     * @param {Object} req - The request object.
+     * @param {Object} res - The response object.
+     *
+     * @return {Promise<Object>} A promise that resolves to the success response object.
+     */
     async profile(req, res) {
         const userData = await auth(req);
-        console.log(userData);
 
         return new JsonResponse(res).success(userData, 'User profile loaded', 200);
     }
-}
-
-/**
- * Authenticates a user by verifying the provided JWT token and returns the corresponding user data.
- *
- * @param {Object} req - The HTTP request object containing the authorization header with the JWT token.
- *
- * @return {Object} The authenticated user data, excluding the password.
- */
-async function auth(req) {
-    const authHeader = req.headers.authorization;
-    console.log(authHeader);
-    const token = authHeader?.split(' ')[1] || null;
-    
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    return await User.findById(decoded.id).select('-password');
 }
 
 export default new UserController();
