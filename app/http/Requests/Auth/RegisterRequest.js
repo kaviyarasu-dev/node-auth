@@ -1,4 +1,4 @@
-import Request from "../../../base/Request.js";
+import Request from "../../../base/request.js";
 import Joi from "joi";
 
 class RegisterRequest extends Request {

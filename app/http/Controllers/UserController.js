@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import LoginRequest from '../Requests/Auth/LoginRequest.js';
 import RegisterRequest from '../Requests/Auth/RegisterRequest.js';
-import { auth } from '../../Helpers/auth.js';
+import { auth } from '../../Helpers/helper.js';
 
 class UserController {
     /**
