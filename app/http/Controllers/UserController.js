@@ -1,5 +1,6 @@
 import User from '../../Models/User.js';
 import JsonResponse from '../../base/response.js';
+import LoginAction from '../../Action/LoginAction.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import LoginRequest from '../Requests/Auth/LoginRequest.js';
@@ -42,26 +43,13 @@ class UserController {
      * @return {Object} A JSON response with the authentication token and user data, or an error message.
      */
     async login(req, res) {
-        const { error, value } = await LoginRequest.validate(req.body);
-        if (error) {
-            return new JsonResponse(res).error({ error: error.details[0].message }, 'Validation error', 422);
-        }
+        // try {
+            const data = await new LoginAction(req, res).handle(req.body); 
 
-        const { email, password } = value;
-        const user = await User.findOne({ email });
-        if (!user) {
-            return new JsonResponse(res).error({ message: 'Email not found' }, 'Invalid credentials', 401);
-        }
-
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-        if (!isPasswordValid) {
-            return new JsonResponse(res).error({ message: 'Password is incorrect' }, 'Invalid credentials', 401);
-        }
-
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
-        const { password: userPassword, ...userWithoutPassword } = user._doc;
-
-        return new JsonResponse(res).success({ token, user: userWithoutPassword }, 'User logged in successfully', 200);
+            return new JsonResponse(res).success(data, 'User logged in successfully');
+        // } catch (error) {
+        //     return new JsonResponse(res).error(error.message, error.message, error.statusCode);
+        // }
     }
 
     /**

@@ -2,6 +2,7 @@ class JsonResponse {
     constructor(response) {
         this.response = response;
     }
+
     /**
      * Returns a successful JSON response with the specified data, message, and status code.
      *
